@@ -1,6 +1,17 @@
+/*******************************************************************************
+Replication do-file for:    Table 3
+Paper:                      Heß, Schündeln, Jaimovich: "Environmental effects of
+                            development programs: Experimental evidence from
+                            West African dryland forests."
+Journal:                    Journal of Development Economics
+Contact:                    Simon Heß (hess@econ.uni-frankfurt.de)
+Required packages:          estout
+Date:                       2021-09-27
+Comments:                   This do-file replicates results from Table 3.
+ *******************************************************************************/
+
 version 13
 set matsize 4000
-cd "D:\Dropbox\Gambia\Gambia Forest Project\Draft\replication\Replication Files"
 do "rerandomize.ado"
 
 use "census2013.dta", clear

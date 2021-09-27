@@ -1,4 +1,16 @@
-cd "D:\Dropbox\Gambia\Gambia Forest Project\Draft\replication\Replication Files"
+/*******************************************************************************
+Replication do-file for:    Appendix Table C.14
+Paper:                      Heß, Schündeln, Jaimovich: "Environmental effects of
+                            development programs: Experimental evidence from
+                            West African dryland forests."
+Journal:                    Journal of Development Economics
+Contact:                    Simon Heß (hess@econ.uni-frankfurt.de)
+Required packages:          estout
+Date:                       2021-09-27
+Comments:                   This do-file replicates results from the summary
+							Table C.14, including balance tests.
+ *******************************************************************************/
+
 use "Village Panel.dta", clear
 keep if year==2001 & kombo==0 & high_forest==1 & eligible==1
 		

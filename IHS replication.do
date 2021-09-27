@@ -1,4 +1,16 @@
-cd "D:\Dropbox\Gambia\Gambia Forest Project\Draft\replication\Replication Files"
+/*******************************************************************************
+Replication do-file for:    Appendix Table C.16
+Paper:                      Heß, Schündeln, Jaimovich: "Environmental effects of
+                            development programs: Experimental evidence from
+                            West African dryland forests."
+Journal:                    Journal of Development Economics
+Contact:                    Simon Heß (hess@econ.uni-frankfurt.de)
+Required packages:          estout, ritest 
+Date:                       2021-09-27
+Comments:                   This do-file replicates results Appendix Table C.16
+							and Appendix Table C.17
+ *******************************************************************************/
+ 
 version 13
 set matsize 4000
 do "rerandomize.ado"
