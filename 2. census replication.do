@@ -12,9 +12,9 @@ Comments:                   This do-file replicates results from Table 3.
 
 version 13
 set matsize 4000
-do "rerandomize.ado"
+do "ado/rerandomize.ado"
 
-use "census2013.dta", clear
+use "6. census2013.dta", clear
 
 eststo, prefix(hf):	areg  zscore_assets_hf 	treatment pop_new PovertyIndex if high_forest==1 	[pweight=vweight_hf]	, cluster(village) absorb(ward_2003)
 eststo, prefix(hf): areg  zscore_animals_hf treatment pop_new PovertyIndex if high_forest==1 	[pweight=vweight_hf]	, cluster(village) absorb(ward_2003)

@@ -20,12 +20,12 @@ Comments:                   This do-file replicates all results from the main
  *******************************************************************************/
 
 clear
-do "rerandomize.ado"
-do "rerandomize_spillovers_full.ado"
+do "ado/rerandomize.ado"
+do "ado/rerandomize_spillovers_full.ado"
 version 13
 
 set matsize 4000
-use "Village Panel.dta", clear
+use "5. Village Panel.dta", clear
 
 est clear
 

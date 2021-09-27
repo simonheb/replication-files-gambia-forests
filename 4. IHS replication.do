@@ -13,9 +13,9 @@ Comments:                   This do-file replicates results Appendix Table C.16
  
 version 13
 set matsize 4000
-do "rerandomize.ado"
+do "ado/rerandomize.ado"
 
-use "IHS.dta", clear
+use "7. IHS.dta", clear
 
 foreach var of varlist pca_assets-buffer {
 	areg  `var' treatment pop_new PovertyIndex [pweight= pw ] if high_forest==1, a(ward_2003) cluster(village)

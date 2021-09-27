@@ -11,7 +11,7 @@ Comments:                   This do-file replicates results from the summary
 							Table C.14, including balance tests.
  *******************************************************************************/
 
-use "Village Panel.dta", clear
+use "5. Village Panel.dta", clear
 keep if year==2001 & kombo==0 & high_forest==1 & eligible==1
 		
 		
