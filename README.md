@@ -1,7 +1,7 @@
 # Replication files for:
- *Environmental effects of development programs: Experimental evidence from West African dryland forests*
- by Simon Heﬂ, Dany Jaimovich, and Matthias Sch¸ndeln
- published in Journal of Development Economics, https://doi.org/10.1016/j.jdeveco.2021.102737
+ "Environmental effects of development programs: Experimental evidence from West African dryland forests"
+ by Simon He√ü, Dany Jaimovich, and Matthias Sch√ºndeln,
+ *Journal of Development Economics*, https://doi.org/10.1016/j.jdeveco.2021.102737
 
 ## Content
 
