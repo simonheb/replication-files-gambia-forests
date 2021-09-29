@@ -60,7 +60,7 @@ foreach depvar in l_ll01_1KM l_ll01_5KM l_ll01_poly {
 		qui sum bs_year
 		local maxyear `r(max)'
 		
-		expand 14 //prepare to draw 14 bootstrap samples
+		expand 500 //prepare to draw 500 bootstrap samples
 		sort village year, stable
 		by village year: gen bs_b=_n //number the draws
 		sort village bs_b year, stable
@@ -71,7 +71,7 @@ foreach depvar in l_ll01_1KM l_ll01_5KM l_ll01_poly {
 
 		by village bs_b: replace bs_draw = bs_draw[_n-1] if missing(bs_draw)
 		//bs_vy should contain for each village the row from which the draw is to be taken
-		gen bs_vy = (bs_draw-1)*(14*`maxyear')+bs_year
+		gen bs_vy = (bs_draw-1)*(500*`maxyear')+bs_year
 		
 		
 		//copy the draw
@@ -82,7 +82,7 @@ foreach depvar in l_ll01_1KM l_ll01_5KM l_ll01_poly {
 		gen bs_yhatT_nrp_`depvar' = exp(yhat_nrp_`depvar' + bs_error)-0.0755307
 		gen bs_yhatT_program_`depvar' = exp(yhat_program_`depvar'+ bs_error)-0.0755307
 		
-		//average over all 14 draws from the same village
+		//average over all 500 draws from the same village
 		collapse (mean) bs_yhatT_nrp_`depvar' bs_yhatT_program_`depvar', by(village year)
 		save `bsres', replace
 	restore
@@ -137,7 +137,7 @@ foreach depvar in l_ll01_1KM l_ll01_5KM l_ll01_poly {
 		qui sum bs_year
 		local maxyear `r(max)'
 		
-		expand 14 //prepare to draw 14 bootstrap samples
+		expand 500 //prepare to draw 500 bootstrap samples
 		sort village year
 		by village year: gen bs_b=_n //number the draws
 							
@@ -147,7 +147,7 @@ foreach depvar in l_ll01_1KM l_ll01_5KM l_ll01_poly {
 		by village bs_b: gen bs_draw = ceil(runiform()*`maxvid') if _n==1 
 		by village bs_b: replace bs_draw = bs_draw[_n-1] if missing(bs_draw)
 		//bs_vy should contain for each village the row from which the draw is to be taken
-		gen bs_vy = (bs_draw-1)*(14*`maxyear')+bs_year
+		gen bs_vy = (bs_draw-1)*(500*`maxyear')+bs_year
 		//copy the draw
 		sort village bs_b year, stable
 		gen bs_error = error_s_`depvar'[bs_vy]
@@ -156,7 +156,7 @@ foreach depvar in l_ll01_1KM l_ll01_5KM l_ll01_poly {
 		gen bs_yhatT_nrp_s_`depvar' = exp(yhat_nrp_s_`depvar' + bs_error)-0.0755307
 		gen bs_yhatT_program_s_`depvar' = exp(yhat_program_s_`depvar'+ bs_error)-0.0755307
 		
-		//average over all 14 draws from the same village
+		//average over all 500 draws from the same village
 		collapse (mean) bs_yhatT_nrp_s_`depvar' bs_yhatT_program_s_`depvar', by(village year)
 		save `bsres', replace
 	restore
@@ -230,7 +230,7 @@ foreach depvar in l_ll01_1KM l_ll01_5KM l_ll01_poly {
 		//Table A.7
 		eststo, prefix(TableA7b): reghdfe `depvar'  c.post_11_18#c.treatment c.post_08_10#c.treatment   ///
 							, cluster(ward_2003) a(village ward_2003#year) 
-		ritest treatment _b[c.post_11_18#c.treatment] _b[c.post_08_10#c.treatment], r(140) lessdots samplingprogram(rerandomize) randomizationprogramoptions("stratvar(ward_2003) clustvar(village)"): `e(cmdline)'
+		ritest treatment _b[c.post_11_18#c.treatment] _b[c.post_08_10#c.treatment], r(5000) lessdots samplingprogram(rerandomize) randomizationprogramoptions("stratvar(ward_2003) clustvar(village)"): `e(cmdline)'
 		eststo, prefix(TableA7c)
 		estadd matrix p_ritest_c = r(p)
 		
@@ -241,8 +241,8 @@ foreach depvar in l_ll01_1KM l_ll01_5KM l_ll01_poly {
 		cap gen fwx = ward_2003*10000+year
 		eststo, prefix(TableA7d): acreg `depvar' tpost_08_10 tpost_11_18, pfe1(village) pfe2(fwx) time(year) id(village) spatial latitude(POINT_XY_lat) longitude(POINT_XY_lon) dist(10) lagcutoff(18) hac
 		*/
-		eststo, prefix(TableA7e): bootstrap, nodots strata(ward_2003) seed(2020) r(14) idcluster(nv) cluster(village) : reghdfe `depvar' c.treatment#c.post_08_10 c.treatment#c.post_11_18, a(nv ward_2003#year) 		
-		eststo, prefix(TableA7f): bootstrap, nodots cluster(ward_2003) seed(2020) r(14) idcluster(nw) : reghdfe `depvar' c.treatment#c.post_08_10 c.treatment#c.post_11_18, a(nw#village nw#year)
+		eststo, prefix(TableA7e): bootstrap, nodots strata(ward_2003) seed(2020) r(500) idcluster(nv) cluster(village) : reghdfe `depvar' c.treatment#c.post_08_10 c.treatment#c.post_11_18, a(nv ward_2003#year) 		
+		eststo, prefix(TableA7f): bootstrap, nodots cluster(ward_2003) seed(2020) r(500) idcluster(nw) : reghdfe `depvar' c.treatment#c.post_08_10 c.treatment#c.post_11_18, a(nw#village nw#year)
 
 		
 		//cgmwildboot does not like interactions and needs partialled out fixed effects. so we create them.
@@ -250,7 +250,7 @@ foreach depvar in l_ll01_1KM l_ll01_5KM l_ll01_poly {
 			cap reghdfe `var', a(village ward_2003#year) resid(`var'_pfe)
 		}
 						
-		eststo, prefix(TableA7g): cgmwildboot `depvar' tpost_08_10_pfe tpost_11_18_pfe, seed(2020) cluster(ward_2003) bootcluster(ward_2003) null(. .) reps(14)
+		eststo, prefix(TableA7g): cgmwildboot `depvar' tpost_08_10_pfe tpost_11_18_pfe, seed(2020) cluster(ward_2003) bootcluster(ward_2003) null(. .) reps(500)
 	restore
 	
 	//Table A.8 - Here with cluster robust inference, the paper also shows results for Conley/RI, which require village coordinates (see comment above)
